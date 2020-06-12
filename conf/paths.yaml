@@ -1,0 +1,4 @@
+# Paths of directories or files for this repository
+project_dir: /home/mwjeong/projects
+cwas_repo: /home/mwjeong/projects/cwas
+run_vep: /home/mwjeong/projects/cwas/src/run_vep.py
