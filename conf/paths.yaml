@@ -2,3 +2,18 @@
 project_dir: /home/mwjeong/projects
 cwas_repo: /home/mwjeong/projects/cwas
 run_vep: /home/mwjeong/projects/cwas/src/run_vep.py
+
+# Annotation files to be preprocessed
+In_Yale_H3K27ac_CBC: data/annotate/PEC_ASD_Yale-UCSF_CBC_Epigenomics_H3K27ac_sorted_merged_hg19ToHg38.sorted.bed.gz
+In_Yale_H3K27ac_DFC: data/annotate/PEC_ASD_Yale-UCSF_DFC_Epigenomics_H3K27ac_sorted_merged_hg19ToHg38.sorted.bed.gz
+In_phastCons46wayVt: data/annotate/phastCons46way.vertebrate.hg19ToHg38.bw
+In_phyloP46wayVt: data/annotate/phyloP46way.vertebrate.hg19ToHg38.bw
+
+# Annotation files after being preprocessed
+Out_Yale_H3K27ac_CBC: data/annotate/PEC_ASD_Yale-UCSF_CBC_Epigenomics_H3K27ac_sorted_merged_hg19ToHg38.sorted.filt.bed
+Out_Yale_H3K27ac_DFC: data/annotate/PEC_ASD_Yale-UCSF_DFC_Epigenomics_H3K27ac_sorted_merged_hg19ToHg38.sorted.filt.bed
+Out_phastCons46wayVt: data/annotate/phastCons46way.vertebrate.hg19ToHg38.bed
+Out_phyloP46wayVt: data/annotate/phyloP46way.vertebrate.hg19ToHg38.bed
+
+# Essential files
+chrom_size: data/hg38.chrom.sizes
