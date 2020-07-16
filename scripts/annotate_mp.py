@@ -22,22 +22,22 @@ def main():
                         help='Number of processes for this script (Default: 1)',
                         default=1)
     parser.add_argument('--start_idx', dest='start_idx', required=False, type=int, default=0,
-                        help='Start index of a list of file paths')
+                        help='Start index of a list of file paths (0-based)')
     parser.add_argument('--end_idx', dest='end_idx', required=False, type=int, default=10000,
                         help='End index of a list of file paths')
     args = parser.parse_args()
 
     # Path settings
     project_dir = os.path.dirname(os.path.abspath(__file__))
-    path_conf_path = os.path.join(project_dir, 'conf', 'paths.yaml')
+    path_conf_path = os.path.join(project_dir, 'conf', 'cwas_paths.yaml')
 
     with open(path_conf_path, 'r') as path_conf:
         path_dict = yaml.safe_load(path_conf)
 
-    vep_script = path_dict['run_vep']
+    vep_script = path_dict['annotate']
     in_vcf_paths = sorted(glob(f'{args.in_dir}/*.vcf'))
     in_vcf_paths = in_vcf_paths[args.start_idx:args.end_idx]
-    out_vcf_paths = [f'{args.out_dir}/{os.path.basename(in_vcf_path).replace(".vcf", ".vep.vcf")}'
+    out_vcf_paths = [f'{args.out_dir}/{os.path.basename(in_vcf_path).replace(".vcf", ".annot.vcf")}'
                      for in_vcf_path in in_vcf_paths]
 
     # Make CMDs
