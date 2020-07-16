@@ -21,6 +21,8 @@ def main():
     parser.add_argument('-p', '--num_proc', dest='num_proc', required=False, type=int,
                         help='Number of processes for this script (Default: 1)',
                         default=1)
+    parser.add_argument('--vep', dest='vep_script', required=False, type=str,
+                        help='Path of a Perl script to execute VEP (Default: vep (binary))', default='vep')
     parser.add_argument('--start_idx', dest='start_idx', required=False, type=int, default=0,
                         help='Start index of a list of file paths (0-based)')
     parser.add_argument('--end_idx', dest='end_idx', required=False, type=int, default=10000,
@@ -28,13 +30,13 @@ def main():
     args = parser.parse_args()
 
     # Path settings
-    project_dir = os.path.dirname(os.path.abspath(__file__))
+    project_dir = os.path.dirname(os.path.abspath('.'))
     path_conf_path = os.path.join(project_dir, 'conf', 'cwas_paths.yaml')
 
     with open(path_conf_path, 'r') as path_conf:
         path_dict = yaml.safe_load(path_conf)
 
-    vep_script = path_dict['annotate']
+    annot_script = path_dict['annotate']
     in_vcf_paths = sorted(glob(f'{args.in_dir}/*.vcf'))
     in_vcf_paths = in_vcf_paths[args.start_idx:args.end_idx]
     out_vcf_paths = [f'{args.out_dir}/{os.path.basename(in_vcf_path).replace(".vcf", ".annot.vcf")}'
@@ -43,7 +45,7 @@ def main():
     # Make CMDs
     cmds = []
     for in_vcf_path, out_vcf_path in zip(in_vcf_paths, out_vcf_paths):
-        cmd = f'{vep_script} -i {in_vcf_path} -o {out_vcf_path};'
+        cmd = f'{annot_script} -i {in_vcf_path} -o {out_vcf_path} --vep {args.vep_script};'
         cmds.append(cmd)
 
     # Execute
