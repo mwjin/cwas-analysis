@@ -28,10 +28,10 @@ def main():
         cwas_path_dict = yaml.safe_load(cwas_path_conf)
 
     # Make CMDs
+    cwas_script = cwas_path_dict[args.step]
     cmds = []
 
     if args.step == 'annotate':
-        cwas_script = cwas_path_dict['annotate']
         infile_paths = sorted(glob(f'{args.in_dir}/*.vcf'))
         infile_paths = infile_paths[args.start_idx:args.end_idx]
         os.makedirs(args.out_dir, exist_ok=True)
@@ -44,7 +44,6 @@ def main():
                 cmds.append(cmd)
 
     elif args.step == 'categorize':
-        cwas_script = cwas_path_dict['categorize']
         infile_paths = sorted(glob(f'{args.in_dir}/*.vcf'))
         infile_paths = infile_paths[args.start_idx:args.end_idx]
         os.makedirs(args.out_dir, exist_ok=True)
@@ -54,6 +53,19 @@ def main():
         for infile_path, outfile_path in zip(infile_paths, outfile_paths):
             if not os.path.isfile(outfile_path):
                 cmd = f'{cwas_script} -i {infile_path} -o {outfile_path};'
+                cmds.append(cmd)
+
+    elif args.step == 'burden_test':
+        infile_paths = sorted(glob(f'{args.in_dir}/*.txt'))
+        infile_paths = infile_paths[args.start_idx:args.end_idx]
+        os.makedirs(args.out_dir, exist_ok=True)
+        outfile_paths = [f'{args.out_dir}/{os.path.basename(in_vcf_path).replace(".txt", ".burden.txt")}'
+                         for in_vcf_path in infile_paths]
+
+        for infile_path, outfile_path in zip(infile_paths, outfile_paths):
+            if not os.path.isfile(outfile_path):
+                cmd = f'{cwas_script} binom -i {infile_path} -o {outfile_path} -s {args.sample_file_path} ' \
+                      f'-a {args.adj_file_path};'
                 cmds.append(cmd)
 
     # Execute
@@ -101,9 +113,9 @@ def create_arg_parser() -> argparse.ArgumentParser:
         description='Multiprocessing variant annotation in CWAS',
         help='Multiprocessing variant annotation in CWAS (arg "annotate -h" for usage)'
     )
-    add_common_args(parser_annot)
     parser_annot.add_argument('--vep', dest='vep_script', required=False, type=str,
                               help='Path of a Perl script to execute VEP (Default: vep (binary))', default='vep')
+    add_common_args(parser_annot)
 
     parser_cat = subparsers.add_parser(
         'categorize',
@@ -111,6 +123,17 @@ def create_arg_parser() -> argparse.ArgumentParser:
         help='Multiprocessing variant categorization in CWAS (arg "categorize -h" for usage)'
     )
     add_common_args(parser_cat)
+
+    parser_burden = subparsers.add_parser(
+        'burden_test',
+        description='Multiprocessing burden binomial tests in CWAS',
+        help='Multiprocessing burden binomial tests in CWAS (arg "burden_test -h" for usage)'
+    )
+    parser_burden.add_argument('-s', '--sample_file', dest='sample_file_path', required=True, type=str,
+                               help='File listing sample IDs with their families and sample_types (case or ctrl)')
+    parser_burden.add_argument('-a', '--adj_file', dest='adj_file_path', required=False, type=str,
+                               help='File that contains adjustment factors for No. DNVs of each sample', default='')
+    add_common_args(parser_burden)
 
     return parser
 
