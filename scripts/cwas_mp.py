@@ -39,8 +39,9 @@ def main():
                          for in_vcf_path in infile_paths]
 
         for infile_path, outfile_path in zip(infile_paths, outfile_paths):
-            cmd = f'{cwas_script} -i {infile_path} -o {outfile_path} --vep {args.vep_script};'
-            cmds.append(cmd)
+            if not os.path.isfile(outfile_path):
+                cmd = f'{cwas_script} -i {infile_path} -o {outfile_path} --vep {args.vep_script};'
+                cmds.append(cmd)
 
     elif args.step == 'categorize':
         cwas_script = cwas_path_dict['categorize']
@@ -51,8 +52,9 @@ def main():
                          for in_vcf_path in infile_paths]
 
         for infile_path, outfile_path in zip(infile_paths, outfile_paths):
-            cmd = f'{cwas_script} -i {infile_path} -o {outfile_path};'
-            cmds.append(cmd)
+            if not os.path.isfile(outfile_path):
+                cmd = f'{cwas_script} -i {infile_path} -o {outfile_path};'
+                cmds.append(cmd)
 
     # Execute
     if args.num_proc == 1:
