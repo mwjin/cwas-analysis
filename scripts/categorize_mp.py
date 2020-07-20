@@ -9,7 +9,7 @@ from glob import glob
 
 import yaml
 
-from utils import get_curr_time
+from utils import get_curr_time, execute_cmd
 
 
 def main():
@@ -57,11 +57,7 @@ def main():
         pool.close()
         pool.join()
 
-
-def execute_cmd(cmd):
-    print(f'[{get_curr_time()}, CMD] {cmd}')
-    os.system(cmd)
-    print(f'[{get_curr_time()}, Progress] {cmd} is done.')
+    print(f'[{get_curr_time()}, Progress] Done')
 
 
 if __name__ == '__main__':
