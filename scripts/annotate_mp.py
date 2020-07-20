@@ -39,6 +39,7 @@ def main():
     annot_script = path_dict['annotate']
     in_vcf_paths = sorted(glob(f'{args.in_dir}/*.vcf'))
     in_vcf_paths = in_vcf_paths[args.start_idx:args.end_idx]
+    os.makedirs(args.out_dir, exist_ok=True)
     out_vcf_paths = [f'{args.out_dir}/{os.path.basename(in_vcf_path).replace(".vcf", ".annot.vcf")}'
                      for in_vcf_path in in_vcf_paths]
 
