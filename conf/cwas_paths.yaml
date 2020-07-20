@@ -1,4 +1,13 @@
-# Paths of directories or scripts for the CWAS project (https://github.com/mwjjeong/cwas)
+# Paths of directories, scripts or data for the CWAS project (https://github.com/mwjjeong/cwas)
+
+# Directories
 project_dir: /home/mwjeong/projects
 cwas_repo: /home/mwjeong/projects/cwas
+
+# Scripts
 annotate: /home/mwjeong/projects/cwas/src/annotate.py
+categorize: /home/mwjeong/projects/cwas/src/categorize.py
+
+# Data
+
+
