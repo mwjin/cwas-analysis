@@ -39,7 +39,7 @@ def main():
                          for in_vcf_path in infile_paths]
 
         for infile_path, outfile_path in zip(infile_paths, outfile_paths):
-            if not os.path.isfile(outfile_path):
+            if args.force_overwrite or not os.path.isfile(outfile_path):
                 cmd = f'{cwas_script} -i {infile_path} -o {outfile_path} --vep {args.vep_script};'
                 cmds.append(cmd)
 
@@ -51,7 +51,7 @@ def main():
                          for in_vcf_path in infile_paths]
 
         for infile_path, outfile_path in zip(infile_paths, outfile_paths):
-            if not os.path.isfile(outfile_path):
+            if args.force_overwrite or not os.path.isfile(outfile_path):
                 cmd = f'{cwas_script} -i {infile_path} -o {outfile_path};'
                 cmds.append(cmd)
 
@@ -63,7 +63,7 @@ def main():
                          for in_vcf_path in infile_paths]
 
         for infile_path, outfile_path in zip(infile_paths, outfile_paths):
-            if not os.path.isfile(outfile_path):
+            if args.force_overwrite or not os.path.isfile(outfile_path):
                 cmd = f'{cwas_script} binom -i {infile_path} -o {outfile_path} -s {args.sample_file_path}'
                 cmd += f' -a {args.adj_file_path};' if args.adj_file_path else ';'
                 cmds.append(cmd)
@@ -104,6 +104,10 @@ def create_arg_parser() -> argparse.ArgumentParser:
         subparser.add_argument(
             '--end_idx', dest='end_idx', required=False, type=int,
             help='End index of a list of file paths (Default: None)'
+        )
+        subparser.add_argument(
+            '-f', '--force_overwrite', dest='force_overwrite', action='store_const',
+            const=1, default=0, help='Force to overwrite when downloading data (Default: 0)'
         )
 
     subparsers = parser.add_subparsers(description='A name of a step of CWAS {annotate, categorize, burden_test}',
