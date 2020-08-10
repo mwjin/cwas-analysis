@@ -64,8 +64,8 @@ def main():
 
         for infile_path, outfile_path in zip(infile_paths, outfile_paths):
             if not os.path.isfile(outfile_path):
-                cmd = f'{cwas_script} binom -i {infile_path} -o {outfile_path} -s {args.sample_file_path} ' \
-                      f'-a {args.adj_file_path};'
+                cmd = f'{cwas_script} binom -i {infile_path} -o {outfile_path} -s {args.sample_file_path}'
+                cmd += f' -a {args.adj_file_path};' if args.adj_file_path else ';'
                 cmds.append(cmd)
 
     # Execute
